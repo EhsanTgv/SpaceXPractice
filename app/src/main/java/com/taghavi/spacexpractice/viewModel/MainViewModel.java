@@ -3,6 +3,7 @@ package com.taghavi.spacexpractice.viewModel;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.taghavi.spacexpractice.model.LaunchModel;
@@ -18,7 +19,7 @@ import retrofit2.Response;
 @HiltViewModel
 public class MainViewModel extends ViewModel {
     private final NetworkService service;
-    LiveData<LaunchModel> launchModelLiveData;
+    public MutableLiveData<LaunchModel> launchModelLiveData = new MutableLiveData();
 
     @Inject
     MainViewModel(NetworkService service) {
@@ -30,7 +31,7 @@ public class MainViewModel extends ViewModel {
         service.getLatest().enqueue(new Callback<LaunchModel>() {
             @Override
             public void onResponse(Call<LaunchModel> call, Response<LaunchModel> response) {
-                Log.i("TAGTAG", response.body().getName());
+                launchModelLiveData.setValue(response.body());
             }
 
             @Override
